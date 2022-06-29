@@ -1,0 +1,32 @@
+# Common Files
+*.egg-info
+*.log
+*.lock
+*.py[cod]
+*.swp
+*.swo
+*.zip
+*.cfg
+*.tox
+*~
+.project
+.pydevproject
+
+# Folders
+.cache
+__pycache__/
+migrations
+node_modules
+bower_components
+
+# Translation files
+*.mo
+
+# Sqlite database
+*.db
+*.sqlite
+
+# Virtualenv
+.env
+env
+venv
