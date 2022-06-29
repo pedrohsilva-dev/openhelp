@@ -15,11 +15,11 @@ class UserRepository:
         ...
 
     def all(self):
-        return jsonify([
+        return [
             {
                 "name": "Emilia"
             },
             {
                 "name": "João"
             }
-        ]), 200
+        ]

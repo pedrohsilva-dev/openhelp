@@ -1,4 +1,4 @@
-from flask import request
+from flask import jsonify, request
 from flask_restful import Resource
 
 from app.repositories.users import UserRepository
@@ -10,13 +10,13 @@ class ClientResource(Resource):
         self.repository = UserRepository()
 
     def get(self):
-        return self.repository.all()
+        return self.repository.all(), 200
 
     def post(self):
         return self.repository.insert(request.data)
 
     def put(self, client_id):
-        return self.repository.update(client_id, request.data)
+        ... # return self.repository.update(client_id, request.data)
 
     def patch(self):
         ...
