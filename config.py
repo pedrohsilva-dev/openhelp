@@ -1,21 +1,33 @@
 import os
 
-pathDev = os.path.realpath("temp/openhelp.db")
-pathDev = "sqlite:///" + pathDev
-print(pathDev)
+
+if os.environ.get("SQLALCHEMY_DATABASE_URI") != None:
+    PATH = os.environ.get("SQLALCHEMY_DATABASE_URI")
+else:
+    tmp = os.path.realpath("temp/database.db")
+    PATH = "sqlite:///" + tmp
+    del tmp
 
 
 class Config:
+    '''
+    Configuration Global
+    '''
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
 class DevConfig(Config):
-
-    SQLALCHEMY_DATABASE_URI = pathDev
+    '''
+    Development Configuration
+    '''
+    SQLALCHEMY_DATABASE_URI = PATH
 
 
 class ProdConfig(Config):
-    ...
+    '''
+    Production Configuration
+    '''
+    SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
 
 
 environment = {
