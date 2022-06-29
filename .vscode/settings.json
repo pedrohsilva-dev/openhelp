@@ -7,6 +7,5 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
         "**/__pycache__": true
-    },
-    "hide-files.files": []
+    }
 }
