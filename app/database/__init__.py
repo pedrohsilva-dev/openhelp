@@ -16,17 +16,24 @@ def init_app(server: Flask):
     @server.cli.command()
     def create_tables():
         '''Initialize database'''
+        print("Init Create Tables")
         db.create_all()
+        print("Finish process of creation tables")
 
     @server.cli.command()
     def drop_tables():
-        '''Initialize database'''
-        db.create_all()
+        '''Drop database'''
+        print("Init drop Tables")
+        db.drop_all()
+        print("Finish process of drop tables")
 
     @server.cli.command()
     def refresh():
         '''Initialize database'''
+        print("Init drop Tables")
         db.drop_all()
+        print("Init create Tables")
         db.create_all()
+        print("Finish Tables")
 
     server.cli.add_command(database)

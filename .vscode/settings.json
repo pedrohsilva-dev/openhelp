@@ -7,5 +7,24 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
         "**/__pycache__": true
-    }
+    },
+    "hide-files.files": [],
+    "workbench.activityBar.iconClickBehavior": "toggle",
+    "workbench.activityBar.visible": true,
+    "workbench.statusBar.visible": true,
+    "workbench.sideBar.location": "left",
+    "workbench.editor.showIcons": true,
+    "workbench.editor.showTabs": true,
+    "workbench.panel.defaultLocation": "left",
+    "editor.autoIndent": "full",
+    "editor.formatOnSave": true,
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "./venv",
+        "-p",
+        "*_test.py"
+    ],
+    "python.testing.pytestEnabled": false,
+    "python.testing.unittestEnabled": true
 }

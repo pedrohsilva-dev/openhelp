@@ -11,3 +11,9 @@ class Client(db.Model):
         self.name = name.strip()
         self.email = email.lower().strip()
         self.password = hash(password)
+
+    def get_dictionary():
+        ...
+
+    def get_json():
+        ...
