@@ -14,13 +14,14 @@ resource_fields = {
     "photo_profile": fields.String()
 }
 parser = reqparse.RequestParser()
-parser.add_argument('username')
-parser.add_argument('email')
-parser.add_argument('password')
-parser.add_argument('city')
-parser.add_argument('state')
+parser.add_argument('username', location="form")
+parser.add_argument('email', location="form")
+parser.add_argument('password', location="form")
+parser.add_argument('city', location="form")
+parser.add_argument('state', location="form")
 parser.add_argument(
-    "photo_profile", type=werkzeug.datastructures.FileStorage, location='files')
+    "photo_profile", type=werkzeug.datastructures.FileStorage, location='files'
+)
 
 
 class ClientResource(Resource):
@@ -47,19 +48,11 @@ class ClientResource(Resource):
         client = Client(username, email, password, city,
                         state, filename)
 
-        photo_profile.save(os.path.abspath("files"), filename)
+        # photo_profile.save(os.path.abspath("files"), filename)
 
         client.save()
-        print(
-            f"\n\n\n\n\n\n\n\n\n{filename}TESTEJKLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLlllllllllllllllllljkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkn\n\n\n\n\n\n\n\n\n")
 
-        return jsonify(
-            username="pedro",
-            email="pedro@gmail.com",
-            city="São Miguel",
-            state="SP",
-            photo_profile="jdnfiendosn"
-        ), 200
+        return client, 200
 
     def put(self, client_id):
         return self.repository.update(client_id, request.data)
