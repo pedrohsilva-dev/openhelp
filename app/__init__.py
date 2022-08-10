@@ -1,10 +1,8 @@
 # libs that it is system core
+from . import global_modules, extensions, database, routes  # extensions
 import os
 from flask import Flask
 from flask_restful import Api
-
-# modules initials project
-from . import global_modules, extensions, database, routes  # extensions
 
 
 def create_app(config=None):

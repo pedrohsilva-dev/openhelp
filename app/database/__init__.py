@@ -13,21 +13,21 @@ def init_app(server: Flask):
     def make_shell_context():
         return shell_context(server, db, Client)
 
-    @server.cli.command()
+    @database.command()
     def create_tables():
         '''Initialize database'''
         print("Init Create Tables")
         db.create_all()
         print("Finish process of creation tables")
 
-    @server.cli.command()
+    @database.command()
     def drop_tables():
         '''Drop database'''
         print("Init drop Tables")
         db.drop_all()
         print("Finish process of drop tables")
 
-    @server.cli.command()
+    @database.command()
     def refresh():
         '''Initialize database'''
         print("Init drop Tables")
