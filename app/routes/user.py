@@ -37,18 +37,20 @@ class ClientResource(Resource):
     def post(self):
         args = parser.parse_args(request)
 
-        username = args["username"]
-        email = args["email"]
-        password = args["password"]
-        city = args["city"]
-        state = args["state"]
+        username = args.get("username")
+        email = args.get("email")
+        password = args.get("password")
+        city = args.get("city")
+        state = args.get("state")
+
         photo_profile = args.get("photo_profile")
+        
         filename = photo_profile.filename
+
+        print(photo_profile.save(os.path.join(os.path.abspath("files"), filename)))
 
         client = Client(username, email, password, city,
                         state, filename)
-
-        # photo_profile.save(os.path.abspath("files"), filename)
 
         client.save()
 
