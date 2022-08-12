@@ -1,4 +1,5 @@
 
+from typing import Dict
 from app.extensions import db
 from werkzeug.security import generate_password_hash
 
@@ -24,6 +25,14 @@ class Client(db.Model):
 
     def save(self):
         db.session.add(self)
+        db.session.commit()
+
+    def delete_object(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def update_object(self, data: Dict):
+        self.update(data)
         db.session.commit()
 
     @classmethod

@@ -44,7 +44,7 @@ class ClientResource(Resource):
         state = args.get("state")
 
         photo_profile = args.get("photo_profile")
-        
+
         filename = photo_profile.filename
 
         print(photo_profile.save(os.path.join(os.path.abspath("files"), filename)))
@@ -57,10 +57,59 @@ class ClientResource(Resource):
         return client, 200
 
     def put(self, client_id):
-        return self.repository.update(client_id, request.data)
+        args = parser.parse_args(request)
+
+        client: Client = Client.query.filter_by(id=int(client_id))
+
+        username = args.get("username")
+        email = args.get("email")
+        password = args.get("password")
+        city = args.get("city")
+        state = args.get("state")
+
+        new_object = dict()
+
+        if username != None:
+            new_object["username"] = username
+        if email != None:
+            new_object["email"] = email
+        if password != None:
+            new_object["password"] = password
+        if city != None:
+            new_object["city"] = city
+        if state != None:
+            new_object["state"] = state
+
+        client.update_object(new_object)
+
+        return client
 
     def patch(self):
-        ...
+        args = parser.parse_args(request)
+
+        client: Client = Client.query.filter_by(id=int(client_id))
+
+        username = args.get("username")
+        email = args.get("email")
+        password = args.get("password")
+        city = args.get("city")
+        state = args.get("state")
+
+        new_object = dict()
+
+        new_object["username"] = username
+        new_object["email"] = email
+        new_object["password"] = password
+        new_object["city"] = city
+        new_object["state"] = state
+
+        client.update_object(new_object)
+
+        return client
 
     def delete(self, client_id):
-        return self.repository.destroy(client_id)
+
+        client: Client = Client.query.filter_by(id=int(client_id))
+
+        client.delete_object()
+        return client_id
