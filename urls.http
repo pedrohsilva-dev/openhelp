@@ -1,0 +1,33 @@
+@apiurl = http://localhost:5000/api
+
+POST https://api.example.com/user/upload
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="text"
+
+title
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="1.png"
+Content-Type: image/png
+
+< ./1.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### Variables 
+
+
+### GET users
+GET {{apiurl}}/users HTTP/1.1
+
+### POST users
+POST {{apiurl}}/users HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer ACCESS-TOKEN
+
+{
+   "name":"Tenali Ramakrishna",
+   "gender":"Male",
+   "email":"tenali.ramakrishna@15ce.com",
+   "status":"Active"
+}
