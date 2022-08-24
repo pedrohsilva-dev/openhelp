@@ -12,7 +12,7 @@ sleep 1
 
 echo "PIP install requirements"
 ./venv/bin/pip3 --proxy="" install -r requirements.txt
-
+echo "Installed..."
 sleep 1
 
 echo "copy .env.example to .env"
