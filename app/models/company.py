@@ -1,6 +1,5 @@
-from app.extensions import db
+from app.extensions import db, login_manager
 from werkzeug.security import generate_password_hash
-
 
 class Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -11,6 +10,12 @@ class Company(db.Model):
     city = db.Column(db.String(120))
     state = db.Column(db.String(2))
     photo_profile = db.Column(db.String(125))
+
+
+    @login_manager.user_loader
+    def load_user(self):
+        return self.id
+    
 
     def __init__(self, company_name: str, email: str, password: str, city: str, state: str, photo_profile: str):
         self.company_name = company_name

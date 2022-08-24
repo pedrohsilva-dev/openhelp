@@ -1,15 +1,37 @@
 {% extends 'base.html' %}
 
 {% block main %}
-    <form action="/register" method="POST">
-        {{form.fantasy_name}}
-        {{form.email}}
-        {{form.password}}
-        {{form.city}}
-        {{form.state}}
-        {{form.cnpj}}
-        <button type="submit">
+<div class="container">
+
+    <div class="card my-4">
+        <div class="card-header">
+            <h1 class="h1">Registrar Empresa</h1>
+        </div>
+        <div class="card-body">
+            <form action="/register" method="POST">
+
+        
+
+        <div class="my-4">
+            <div>{{form.fantasy_name(class="form-control")}}</div>
+            <div>{{form.email(class="form-control")}}</div>
+            <div>{{form.password(class="form-control")}}</div>
+            <div>{{form.city(class="form-control")}}</div>
+            <div>{{form.state(class="form-control")}}</div>
+            <div>{{form.state(class="form-control")}}</div>
+            <div>{{form.cnpj(class="form-control")}}</div>
+        </div>
+        
+        <button  class="btn btn-success" type="submit">
             Registrar Empresa
         </button>
     </form>
+        </div>
+    </div>
+
+    
+
+   
+</div>
+    
 {% endblock %}

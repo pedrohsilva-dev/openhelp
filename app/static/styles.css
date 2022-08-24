@@ -1,11 +1,3 @@
-.container{
-    padding: 30px 45px;
-    border-radius: 5px;
-    background-color: #1e1d1d;
-    color: white;
-    font-size: 16pt;
-    margin: 3px 2px;
-}
 .link a{
     padding: 2px;
     text-decoration: underline;
@@ -14,6 +6,12 @@
     color: #00ffc8;
 }
 
+.form-control {
+    margin: 2px;
+}
+.btn {
+    margin: 2px;
+}
 .link:hover a{
     text-decoration: underline;
     text-transform: none;

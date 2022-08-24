@@ -1,12 +1,28 @@
 {% extends 'base.html' %}
 
 {% block main %}
-<a href="/register">Registrar Empresa</a>
-<form action="/login" method="post">
-    {{form.email}}
-    {{form.password}}
-    <button type="submit">
-        Entrar
-    </button>
-</form>
+
+
+</div>
+<div class="container">
+	<div class="card my-4">
+		<div class="card-header">
+			<h1 class="h1">Login OpenHelp</h1>
+		</div>
+		<div class="card-body">
+			<form action="/login" method="post">
+				<div class="my-4">
+					<div>{{form.email(class="form-control")}}</div>
+	    			<div>{{form.password(class="form-control")}}</div>
+				</div>
+	 
+	    		<button type="submit" class="btn btn-success">
+	        		Entrar
+	    		</button>
+			</form>
+		</div>
+	</div>
+	
+</div>
+
 {% endblock %}
