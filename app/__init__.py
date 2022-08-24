@@ -1,5 +1,8 @@
 # libs that it is system core
-from . import global_modules, extensions, database, routes  # extensions
+
+from app.views.web import start_web
+from . import extensions, database, routes  # extensions
+from .services import authentication
 import os
 from flask import Flask
 from flask_restful import Api
@@ -22,15 +25,23 @@ def create_app(config=None):
     # Init Commands Shell
     database.init_app(server)
 
+    # init authentication
+    authentication.init_app(server)
+
     # Init api
     api = Api(
         prefix=os.environ.get("PREFIX_URL")
         if os.environ.get("PREFIX_URL") != None
         else "/api"
-    )  # put /api init of the URL
+    )
+    # put /api init of the URL
 
+    # Init APP(API RESTful)
     routes.init_router(
-        api  # init routes of API
-    ).init_app(server)  # Init APP(API RESTful)
+        api             # init routes of API
+    ).init_app(server)
 
-    return server  # return instance Flask
+    # Start WebApplication
+    start_web(server)
+    # return instance Flask
+    return server

@@ -1,20 +1,21 @@
 from app.extensions import db
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 
 
-class Client(db.Model):
+class Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String)
+    company_name = db.Column(db.String)
     email = db.Column(db.Text, unique=True)
     password = db.Column(db.String)
+    cnpj = db.Column(db.String)
     city = db.Column(db.String(120))
     state = db.Column(db.String(2))
     photo_profile = db.Column(db.String(125))
 
-    def __init__(self, username: str, email: str, password: str, city: str, state: str, photo_profile: str):
-        self.username = username.strip()
-        self.email = email.lower().strip()
+    def __init__(self, company_name: str, email: str, password: str, city: str, state: str, photo_profile: str):
+        self.company_name = company_name
 
+        self.email = email
         self.password = generate_password_hash(password)
 
         self.city = city.lower()
@@ -29,20 +30,23 @@ class Client(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update_client(self, args):
+    def update_company(self, args):
 
-        username = args.get("username")
+        company_name = args.get("company_name")
+
         email = args.get("email")
         password = args.get("password")
+
         city = args.get("city")
         state = args.get("state")
 
-        if username != None:
-            self.username = username
+        if company_name != None:
+            self.company_name = company_name
         if email != None:
             self.email = email
         if password != None:
             self.password = password
+
         if city != None:
             self.city = city
         if state != None:
@@ -54,29 +58,11 @@ class Client(db.Model):
         return cls.query.filter_by(city=city, state=state).paginate(page=page, per_page=5).items
 
     @classmethod
-    def find(cls, client_id):
-        client = cls.query.filter_by(id=client_id).first()
-        return client
-
-    @classmethod
-    def sign(cls, email: str, password: str):
-        client = cls.query.filter_by(email=email).first()
-
-        if check_password_hash(client.password,  password) == True:
-            user = cls(
-                username=client.username,
-                email=client.email,
-                city=client.city,
-                state=client.state,
-                password="",
-                photo_profile=client.photo_profile
-            )
-
-            user.id = client.id
-            return user
-        return None
+    def find(cls, company_id):
+        company = cls.query.filter_by(id=company_id).first()
+        return company
 
     def __repr__(self) -> str:
         return f"""
-        Client<ID: {self.id}, USERNAME: {self.username}>
+        Company<ID: {self.id}, Company name: {self.company_name}>
         """

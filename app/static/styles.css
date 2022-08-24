@@ -1,0 +1,31 @@
+.container{
+    padding: 30px 45px;
+    border-radius: 5px;
+    background-color: #1e1d1d;
+    color: white;
+    font-size: 16pt;
+    margin: 3px 2px;
+}
+.link a{
+    padding: 2px;
+    text-decoration: underline;
+    text-transform: none;
+    font-weight: 600;
+    color: #00ffc8;
+}
+
+.link:hover a{
+    text-decoration: underline;
+    text-transform: none;
+    font-weight: 700;
+    color: #4bfad4;
+}
+.space-padding{
+    padding: 5px 0px;
+}
+.button{
+    padding: 15px 80px;
+}
+.flex{
+    display: flex;
+}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    {% if clients %}
+        {% for client in clients %}
+            <div>
+                <div class="container">
+                    <div class="space-padding">{{ client.username }}</div>
+                    <div class="space-padding">{{ client.email }}</div>
+                    <div class="space-padding link">
+                        <a href="/messages/{{ client.id }}">Acessar mensagens</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

@@ -2,6 +2,7 @@ from pydoc import cli
 from flask import Flask
 from flask.cli import AppGroup
 from app.extensions import db
+from ..models.company import Company
 from .actions import shell_context
 from ..models.client import Client
 
@@ -11,7 +12,7 @@ def init_app(server: Flask):
 
     @server.shell_context_processor
     def make_shell_context():
-        return shell_context(server, db, Client)
+        return shell_context(server, db, Client, Company)
 
     @database.command()
     def create_tables():

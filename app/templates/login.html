@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<a href="/register">Registrar Empresa</a>
+<form action="/login" method="post">
+    {{form.email}}
+    {{form.password}}
+    <button type="submit">
+        Entrar
+    </button>
+</form>
+{% endblock %}

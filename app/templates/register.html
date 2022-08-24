@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <form action="/register" method="POST">
+        {{form.fantasy_name}}
+        {{form.email}}
+        {{form.password}}
+        {{form.city}}
+        {{form.state}}
+        {{form.cnpj}}
+        <button type="submit">
+            Registrar Empresa
+        </button>
+    </form>
+{% endblock %}
