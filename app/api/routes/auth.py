@@ -3,7 +3,7 @@ import datetime
 from flask_restful import Resource, reqparse, fields, marshal_with
 from flask_jwt_extended import jwt_required, create_access_token
 
-from app.models.client import Client
+from app.system.models.client import Client
 
 
 def auth_request_response():

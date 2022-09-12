@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+
+<style>
+    .post_image {
+        width: 200px;
+        border-radius: 20px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        border: 3px solid #dedede;
+    }
+    .post_image:hover {
+        border-color: #cfe8ff;
+    }
+
+    .flex {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    .block-round{
+        background-color: #2d2d2d;
+        border-radius: 12.7px;
+        padding: 2px 8px;
+        border: 3px solid #cafffd;
+    }
+
+    .block{
+        display: block;
+    }
+
+    .image-flex-column{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .text-justify-space{
+        text-align: center;
+        padding: 20px 8px;
+        color: #cfe8ff;
+        line-height: 30px;
+    }
+    .space-y-block{
+        line-height: 1px;
+        padding: 2px;
+        flex-wrap: wrap;
+    }
+    .space-y-block div{
+        margin-bottom: 2px;
+    }
+</style>
+
+{% endblock %}
+
+{% block main %}
+
+<div class="container my-3 px-4">
+    <h1 class="h1">
+        Warnings
+    </h1>
+    <main>
+        <div class="space-y-block">
+            {% if warnings %}
+                {% for warning in warnings %}
+                    <!--INIT POST-->
+                        <div class="flex block-round">
+                            <div class="block text-justify-space">
+                                <p class="text-justify-space mt-2">{{ warning.content }}</p>
+                                <div>
+                                    <a href="teste.py" onclick="return confirm('deseja deletar esse post mesmo?')" class="btn btn-danger mt-4 mb-0">Delete</a>
+                                </div>
+                            </div>
+                            <div class="image-flex-column">
+                                <img  class="post_image" src="{{ warning.image }}" alt="Image de um post sobre ouvidoria de onibus">
+                            </div>
+                        </div>
+                    <!--END POST-->
+                {% endfor %}
+            {% endif %}
+         
+        </div>
+    </main>
+</div>
+
+{% endblock %}

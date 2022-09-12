@@ -13,5 +13,5 @@ class Company(Form):
 
 
 class CompanyLogin(Form):
-    email = StringField('E-mail')
-    password = PasswordField('Senha')
+    email = StringField('email')
+    password = PasswordField('password')

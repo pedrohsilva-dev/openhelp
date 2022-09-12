@@ -1,11 +1,14 @@
 # libs that it is system core
 
-from app.views.web import start_web
-from . import extensions, database, routes  # extensions
-from .services import authentication
 import os
 from flask import Flask
 from flask_restful import Api
+
+
+from app.system import database, extensions
+from app.system.services import authentication
+from app.api import routes
+from app.website import views
 
 
 def create_app(config=None):
@@ -14,6 +17,7 @@ def create_app(config=None):
         :description: Factory that make start initial
         of the Server
     """
+
     server = Flask(__name__)
 
     # Init Configuration
@@ -42,6 +46,7 @@ def create_app(config=None):
     ).init_app(server)
 
     # Start WebApplication
-    start_web(server)
+    views.init_app(server)
+
     # return instance Flask
     return server

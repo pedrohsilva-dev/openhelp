@@ -4,4 +4,4 @@ import config
 
 app = create_app(config.environment[
     os.environ.get("FLASK_ENV")
-])
+ ])

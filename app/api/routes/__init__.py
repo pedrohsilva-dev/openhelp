@@ -1,5 +1,5 @@
 from flask_restful import Api
-from . import client, company, auth
+from app.api.routes import client, company, auth
 
 
 def init_router(api: Api):

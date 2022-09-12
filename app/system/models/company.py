@@ -1,7 +1,9 @@
-from app.extensions import db, login_manager
-from werkzeug.security import generate_password_hash
+from app.system.extensions import db
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 class Company(db.Model):
+    __tablename__ = "company"
     id = db.Column(db.Integer, primary_key=True)
     company_name = db.Column(db.String)
     email = db.Column(db.Text, unique=True)
@@ -10,12 +12,6 @@ class Company(db.Model):
     city = db.Column(db.String(120))
     state = db.Column(db.String(2))
     photo_profile = db.Column(db.String(125))
-
-
-    @login_manager.user_loader
-    def load_user(self):
-        return self.id
-    
 
     def __init__(self, company_name: str, email: str, password: str, city: str, state: str, photo_profile: str):
         self.company_name = company_name
@@ -50,13 +46,23 @@ class Company(db.Model):
         if email != None:
             self.email = email
         if password != None:
-            self.password = password
+            self.password = generate_password_hash(password)
 
         if city != None:
             self.city = city
         if state != None:
             self.state = state
         db.session.commit()
+
+    @classmethod
+    def sign(cls, email: str, password: str):
+        company = cls.query.filter_by(email=email).first()
+        if company != None:
+            if check_password_hash(company.password,  password) == True:
+                return company
+            return None
+        else:
+            return None
 
     @classmethod
     def getAll(cls, page=None, city="são miguel arcanjo", state="SP"):
@@ -66,6 +72,21 @@ class Company(db.Model):
     def find(cls, company_id):
         company = cls.query.filter_by(id=company_id).first()
         return company
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return str(self.id)
 
     def __repr__(self) -> str:
         return f"""

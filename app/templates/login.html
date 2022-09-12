@@ -10,19 +10,29 @@
 			<h1 class="h1">Login OpenHelp</h1>
 		</div>
 		<div class="card-body">
-			<form action="/login" method="post">
+			<form action="/login" method="POST">
+				<input type="hidden" name="next" value="{{ request.args.get('next', '') }}" />
 				<div class="my-4">
-					<div>{{form.email(class="form-control")}}</div>
-	    			<div>{{form.password(class="form-control")}}</div>
+					<div class="form-group">
+						<label for="email">Email</label>
+						<div>{{form.email(class="form-control", placeholder="insira o seu melhor email ...")}}</div>
+					</div>
+					<div>
+						<label for="password">Password</label>
+						<div>{{form.password(class="form-control", placeholder="Insira uma senha forte ...")}}</div>
+					</div>
 				</div>
-	 
-	    		<button type="submit" class="btn btn-success">
-	        		Entrar
-	    		</button>
-			</form>
+				<div class="d-flex flex-row justify-content-end">
+					<button type="submit" class="btn btn-success px-3 py-2">
+						Entrar
+					</button>
+				</div>
 		</div>
+
+		</form>
 	</div>
-	
+</div>
+
 </div>
 
 {% endblock %}

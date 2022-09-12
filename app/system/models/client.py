@@ -1,10 +1,21 @@
-from app.extensions import db
+from app.system.extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
+# const companies = await axios.get("/api/companies")
+# const name_company = companies.data["company_name"]
+# <View><Text>{name_company}</Text></View>
+
 class Client(db.Model):
+    # nomeia como 'client' a tabela no banco
+    __tablename__ = "client"
+
+    # cria campo chave primaria
     id = db.Column(db.Integer, primary_key=True)
+
+    # cria campos username, email, password, city, state
     username = db.Column(db.String)
+    # o campo unique diz que não deve existir dois dados com mesmo valor neste campo da tabela
     email = db.Column(db.Text, unique=True)
     password = db.Column(db.String)
     city = db.Column(db.String(120))

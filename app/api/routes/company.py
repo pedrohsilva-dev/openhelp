@@ -2,7 +2,7 @@ from flask import request
 from flask_restful import Resource, fields, marshal_with, reqparse
 import werkzeug
 
-from app.models.company import Company
+from app.system.models.company import Company
 
 
 def company_request_response():

@@ -3,7 +3,7 @@ from flask_restful import Resource, fields, marshal_with, reqparse
 
 import werkzeug
 
-from app.models.client import Client
+from app.system.models.client import Client
 
 
 def client_request_response():

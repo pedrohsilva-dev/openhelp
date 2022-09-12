@@ -27,3 +27,19 @@
 .flex{
     display: flex;
 }
+
+.verylightblue_theme {
+    background-color: rgb(176, 255, 255);
+ }
+ 
+ .verylightgreen_theme {
+    background-color: #b0ffd1;
+ }
+ 
+ 
+ .verylightgreen_theme:hover {
+    background-color: #bbfad5;
+ }
+ .size_img_w{
+    width: 250px;
+ }

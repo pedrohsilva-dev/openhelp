@@ -16,6 +16,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JWT_SECRET_KEY = "osdfkqwdnfbuybewsdhfvbfidfsjdieheqdpj"
     SECRET_KEY = "jbdiçsgpweregtergerwgfejbgileçhjfuqehrbf"
+    WTF_CSRF_ENABLED = False
 
 
 class DevConfig(Config):

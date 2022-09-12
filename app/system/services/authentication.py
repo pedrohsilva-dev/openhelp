@@ -1,9 +1,17 @@
 from flask import Flask
-from flask_jwt_extended import JWTManager
 
-from app.models.client import Client
+from flask_jwt_extended import JWTManager
+from flask_login import LoginManager
+
+from app.system.models.client import Client
+from app.system.models.company import Company
+
+
 # configuration JWT
 jwt = JWTManager()
+login_manager = LoginManager()
+
+login_manager.login_view = "loginView"
 
 
 @jwt.user_identity_loader
@@ -21,5 +29,11 @@ def user_lookup_callback(_jwt_header, jwt_data):
     return Client.query.filter_by(id=identity).one_or_none()
 
 
+@login_manager.user_loader
+def load_user(id):
+    return Company.query.filter_by(id=id).first()
+
+
 def init_app(server: Flask):
     jwt.init_app(server)
+    login_manager.init_app(server)
