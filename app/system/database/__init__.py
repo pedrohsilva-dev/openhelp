@@ -2,6 +2,7 @@ from pydoc import cli
 from flask import Flask
 from flask.cli import AppGroup
 from app.system.extensions import db
+from app.system.models.follow import Follow
 from ..models.company import Company
 from .actions import shell_context
 from ..models.client import Client
@@ -12,7 +13,7 @@ def init_app(server: Flask):
 
     @server.shell_context_processor
     def make_shell_context():
-        return shell_context(server, db, Client, Company)
+        return shell_context(server, db, Client, Company, Follow)
 
     @database.command()
     def create_tables():
@@ -31,7 +32,7 @@ def init_app(server: Flask):
     @database.command()
     def seed_tables():
         """ Preenche banco de dados com dados fake """
-        for i in range(1, 180):
+        for i in range(1, 10):
             db.session.add(Company(
                 f"user{i}",
                 f"user{i}@gmail.com",

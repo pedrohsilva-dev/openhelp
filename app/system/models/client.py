@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 class Client(db.Model):
     # nomeia como 'client' a tabela no banco
-    __tablename__ = "client"
+    __tablename__ = "clients"
 
     # cria campo chave primaria
     id = db.Column(db.Integer, primary_key=True)

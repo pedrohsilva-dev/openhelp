@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+<form action="/test" method="POST">
+    {{form.teste}}
+    {{form.campo}}
+    <button type="submit">Enviar</button>
+</form>
+{% endblock %}

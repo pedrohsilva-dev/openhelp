@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class Company(db.Model):
-    __tablename__ = "company"
+    __tablename__ = "companies"
     id = db.Column(db.Integer, primary_key=True)
     company_name = db.Column(db.String)
     email = db.Column(db.Text, unique=True)
@@ -27,31 +27,32 @@ class Company(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def delete_object(self):
-        db.session.delete(self)
+    @classmethod
+    def delete_object(cls, data):
+        data.delete()
         db.session.commit()
 
-    def update_company(self, args):
+    @classmethod
+    def update_company(cls, old, new: dict):
 
-        company_name = args.get("company_name")
-
-        email = args.get("email")
-        password = args.get("password")
-
-        city = args.get("city")
-        state = args.get("state")
+        company_name = new.get("company_name", None)
+        email = new.get("email", None)
+        password = new.get("password", None)
+        city = new.get("city", None)
+        state = new.get("state", None)
 
         if company_name != None:
-            self.company_name = company_name
+            old.company_name = company_name
         if email != None:
-            self.email = email
+            old.email = email
         if password != None:
-            self.password = generate_password_hash(password)
-
+            old.password = generate_password_hash(password)
         if city != None:
-            self.city = city
+            old.city = city
         if state != None:
-            self.state = state
+            old.state = state
+
+        old.update(new)
         db.session.commit()
 
     @classmethod

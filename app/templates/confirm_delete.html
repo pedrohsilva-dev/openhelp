@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+<div class="container">
+    <h1>Confirme a deleção da sua conta</h1>
+    <div class="container">
+        <form action="/delete" method="post">
+            <div class="d-flex flex-row justify-content-center">
+                <button class="btn btn-danger px-4" type="submit">Deletar seu usuário</button>
+                <a class="btn btn-primary px-4" href="/profile">Perfil de usuario</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

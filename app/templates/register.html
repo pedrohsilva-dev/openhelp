@@ -5,8 +5,7 @@
       <h1 class="h1">Registrar Empresa</h1>
     </div>
     <div class="card-body">
-      <form action="/register" method="POST">
-        {{ form.csrf_token }}
+      <form action="/register" method="POST" enctype="multipart/form-data">
         <div class="my-4">
           <div>
             <label for="fantasy_name">Nome Fantasia</label>
@@ -31,6 +30,10 @@
           <div>
             <label for="cnpj">CNPJ</label>
             <div>{{form.cnpj(class="form-control")}}</div>
+          </div>
+          <div>
+            <label for="photo">Imagem</label>
+            <div>{{form.photo(class="form-control")}}</div>
           </div>
         </div>
         <div class="d-flex flex-row justify-content-end">

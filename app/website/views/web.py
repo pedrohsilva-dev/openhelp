@@ -1,15 +1,19 @@
+import os
 from app.system.extensions import config
+
+from werkzeug.utils import secure_filename
 from flask_login import logout_user, login_user, login_required, current_user
 from flask import request, render_template, url_for, redirect, abort, send_from_directory
 # v from urlparse2.urlparse2 import urljoin, urlparse
 from flask import request, url_for
 from app.website.forms.company import Company as CompanyForm
 from app.website.forms.company import CompanyLogin
+from app.website.forms.teste import Teste
 from app.website.forms.warning import WarningForm
 from app.system.models.company import Company
 from app.system.models.client import Client
 from app.system.models.warning import Warnings
-from app.website.utils import generate_namefile
+from app.website.utils import dir_file, generate_namefile
 
 
 @login_required
@@ -18,20 +22,13 @@ def homeView():
     return render_template("clients.html", clients=clientsData)
 
 
-# def is_safe_url(target):
-#     ref_url = urlparse(request.host_url)
-#     test_url = urlparse(urljoin(request.host_url, target))
-#     return test_url.scheme in ('http', 'https') and \
-#         ref_url.netloc == test_url.netloc
-
-
 def loginView():
     """ Access: /login [done] """
     form = CompanyLogin()
 
     if request.method == "POST":
-        email = str(request.form.get("email"))
-        password = str(request.form.get("password"))
+        email = str(form.email.data)
+        password = str(form.password.data)
         company = Company.sign(email, password)
 
         if (company != None):
@@ -63,19 +60,22 @@ def warningsFormView():
     form = WarningForm()
 
     if (request.method == 'POST'):
-        title = request.form.get('title')
-        content = request.form.get('content')
-        photo = request.files.get('photo')
+        if form.validate_on_submit():
+            title = form.title.data
+            content = form.content.data
+            photo = form.photo.data
 
-        filename_photo = generate_namefile(
-            photo.filename, photo.content_type)
-        photo.save(filename_photo)
+            filename_photo = generate_namefile(
+                secure_filename(photo.filename), photo.content_type
+            )
+            photo.save(filename_photo)
+
+            warning = Warnings(title=title, content=content,
+                               image=filename_photo)
+
+            warning.save()
+
         warnings = Warnings.query.all()
-
-        warning = Warnings(title=title, content=content,
-                           image=filename_photo)
-
-        warning.save()
         return render_template("posts.html", warnings=warnings)
 
     return render_template("register_post.html", form=form)
@@ -88,17 +88,24 @@ def registerView():
         return render_template("register.html", form=form)
     elif str(request.method) == "POST":
         form = CompanyForm()
+        if form.validate_on_submit():
+            username = form.fantasy_name.data
+            email = form.email.data
+            password = form.password.data
+            city = form.city.data
+            state = form.state.data
 
-        username = request.form.get('fantasy_name')
-        email = request.form.get('email')
-        password = request.form.get('password')
-        city = request.form.get('city')
-        state = request.form.get('state')
+            photo = form.photo.data
 
-        company = Company(username, email, password,
-                          city, state, "disfishd")
+            filename_photo = generate_namefile(
+                secure_filename(photo.filename), photo.content_type
+            )
+            photo.save(dir_file(filename_photo))
 
-        company.save()
+            company = Company(username, email, password,
+                              city, state, filename_photo)
+
+            company.save()
 
         form = CompanyLogin()
         return render_template("login.html", form=form)
@@ -131,7 +138,6 @@ def messageWarningImageView(photo_id: int = None):
 def messageClientImageView(photo_id: int = None):
     """ Access: /client/image/<int:photo_id> (done) """
     photo_client = Client.query.filter_by(id=photo_id)
-    print(photo_client)
     image = photo_client.photo_profile
 
     if (photo_id is None):
@@ -150,20 +156,18 @@ def index():
 
 
 @login_required
-def messageCompanyImageView(photo_id: int = None):
-    """ Access: /company/image/<int:photo_id> """
-    photo_company: Company = Company.query.filter_by(id=photo_id)
-
+def companyImageView():
+    photo_company = Company.find(current_user.id)
+    print(photo_company)
     image = photo_company.photo_profile
-
-    if (photo_id is None):
+    if (current_user.id != None):
 
         return send_from_directory(
-            str(config['UPLOAD_FOLDER']), image, as_attachment=True
-        ), 200
+            os.path.realpath("files"), image, as_attachment=True
+        )
 
     else:
-        return None, 404
+        return photo_company, 200
 
 
 @login_required
@@ -172,8 +176,72 @@ def messageOuve(company=None, client=None):
     return render_template("ouve.html")
 
 
-
 @login_required
 def logoutView():
     logout_user()
+    return redirect(url_for("loginView"))
+
+
+@login_required
+def profile():
+    return render_template("profile.html", user=current_user.id)
+
+
+def testeView():
+    ...
+    # formTest = Teste()
+
+    # if request.method == "POST":
+    #     if formTest.validate_on_submit():
+    #         print("Campos")
+    #         print(formTest.campo.data)
+    #         print(formTest.teste.data)
+
+    # return render_template("form.html", form=formTest)
+
+
+@login_required
+def updateView():
+
+    if request.method == "POST":
+        formCompany = CompanyForm()
+        if formCompany.validate_on_submit():
+            fantasy_name = formCompany.fantasy_name.data
+            email = formCompany.email.data
+            password = formCompany.password.data
+            city = formCompany.city.data
+            state = formCompany.state.data
+            company = Company.query.filter_by(id=current_user.id)
+            data = {
+                "company_name": fantasy_name,
+                "email": email,
+                "city": city,
+                "state": state
+            }
+
+            if (password != None):
+                data["password"] = str(password)
+
+            Company.update_company(old=company, new=data)
+    elif (request.method == "GET"):
+        formCompany = CompanyForm()
+
+        formCompany.fantasy_name.data = current_user.company_name
+        formCompany.email.data = current_user.email
+        formCompany.password.data = current_user.password
+        formCompany.city.data = current_user.city
+        formCompany.state.data = current_user.state
+
+    return render_template("update.html", form=formCompany)
+
+
+@login_required
+def deleteView():
+    if request.method == "POST":
+        company: Company = Company.query.filter_by(id=int(current_user.id))
+        # deleta cliente
+        Company.delete_object(company)
+    else:
+        return render_template("confirm_delete.html")
+
     return redirect(url_for("loginView"))

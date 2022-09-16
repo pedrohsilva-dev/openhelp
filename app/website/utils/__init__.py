@@ -1,6 +1,6 @@
 from datetime import datetime
 import os
-from random import random
+from random import randint
 
 
 def ext_path(src: str):
@@ -27,7 +27,7 @@ def generate_namefile(file: str, ext: str):
     if (mm < 10):
         zero_mon = "0"
 
-    return f"{random.randint(0, 20)}-{yyyy}-{zero_mon}{mm}-{zero_day}{dd}-{tmstp}-{hash(file)}{ext_path(ext)}"
+    return f"{randint(0, 20)}-{yyyy}-{zero_mon}{mm}-{zero_day}{dd}-{tmstp}-{hash(file)}{ext_path(ext)}"
 
 
 def dir_file(file, src: str = 'files'):

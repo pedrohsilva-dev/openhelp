@@ -82,8 +82,8 @@ router.add(
 )
 router.add(
     Route(
-        "/company/image/<int:photo_id>",
-        messageCompanyImageView,
+        "/company/profile",
+        companyImageView,
         ["GET"]
     )
 )
@@ -92,6 +92,38 @@ router.add(
     Route(
         "/index",
         index,
+        [
+            "GET", "POST"
+        ]
+    )
+)
+
+
+router.add(
+    Route(
+        "/profile",
+        profile,
+        [
+            "GET", "POST"
+        ]
+    )
+)
+
+
+router.add(
+    Route(
+        "/update",
+        updateView,
+        [
+            "GET", "POST"
+        ]
+    )
+)
+
+router.add(
+    Route(
+        "/delete",
+        deleteView,
         [
             "GET", "POST"
         ]
