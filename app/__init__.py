@@ -16,7 +16,7 @@ from app.website import views
 def create_app(config=None):
     """
         :param: config configuration archive config.py
-        :description: Factory that make start initial
+        :description: Factory that make initial app
         of the Server
     """
 
