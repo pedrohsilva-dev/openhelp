@@ -2,10 +2,13 @@ from pydoc import cli
 from flask import Flask
 from flask.cli import AppGroup
 from app.system.extensions import db
-from app.system.models.follow import Follow
+from app.system.models.warning import Warnings
 from ..models.company import Company
 from .actions import shell_context
 from ..models.client import Client
+from app.system.models.follow import Follow
+from app.system.models.message import Message
+from app.system.models.speech import Speech
 
 
 def init_app(server: Flask):
@@ -13,7 +16,7 @@ def init_app(server: Flask):
 
     @server.shell_context_processor
     def make_shell_context():
-        return shell_context(server, db, Client, Company, Follow)
+        return shell_context(server, db, Client, Company, Follow, Speech, Message, Warnings)
 
     @database.command()
     def create_tables():

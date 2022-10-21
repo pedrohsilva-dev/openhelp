@@ -14,9 +14,9 @@ class Config:
     Configuration Global
     '''
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    JWT_SECRET_KEY = "osdfkqwdnfbuybewsdhfvbfidfsjdieheqdpj"
-    SECRET_KEY = "jbdiçsgpweregtergerwgfejbgileçhjfuqehrbf"
+    SECRET_KEY = "hgdhfuidfghdfuihgodfhugihdfuighfduhguifdjvoixcjviocxvniudcnvicnv"
     WTF_CSRF_ENABLED = False
+    UPLOAD_FOLDER = os.path.realpath("files")
 
 
 class DevConfig(Config):

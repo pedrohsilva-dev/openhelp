@@ -72,19 +72,19 @@ class Client(db.Model):
     @classmethod
     def sign(cls, email: str, password: str):
         client = cls.query.filter_by(email=email).first()
+        if (client != None):
+            if check_password_hash(client.password,  password) == True:
+                user = cls(
+                    username=client.username,
+                    email=client.email,
+                    city=client.city,
+                    password="",
+                    state=client.state,
+                    photo_profile=client.photo_profile
+                )
 
-        if check_password_hash(client.password,  password) == True:
-            user = cls(
-                username=client.username,
-                email=client.email,
-                city=client.city,
-                state=client.state,
-                password="",
-                photo_profile=client.photo_profile
-            )
-
-            user.id = client.id
-            return user
+                user.id = client.id
+                return user
         return None
 
     def __repr__(self) -> str:

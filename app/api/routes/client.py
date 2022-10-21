@@ -2,8 +2,10 @@ from flask import request
 from flask_restful import Resource, fields, marshal_with, reqparse
 
 import werkzeug
+from werkzeug.utils import secure_filename
 
 from app.system.models.client import Client
+from app.website.utils import dir_file, generate_namefile
 
 
 def client_request_response():
@@ -24,9 +26,9 @@ def client_request_response():
     parser.add_argument('city', location="form")
     parser.add_argument('state', location="form")
     parser.add_argument(
-        "photo_profile", type=werkzeug.datastructures.FileStorage, location='files'
+        "photo_profile", type=werkzeug.datastructures.FileStorage, location='form'
     )
-
+# 192.168.10.102
     return {
         "parser": parser,
         "resource": resource_fields
@@ -66,17 +68,23 @@ class ClientResource(Resource):
         city = args.get("city")
         state = args.get("state")
         # photo client
-        photo_profile = args.get("photo_profile")
+        photo_profile = request.files.get("photo_profile")
 
-        filename = photo_profile.filename
+        filename_photo = generate_namefile(
+            secure_filename(photo_profile.filename), photo_profile.content_type
+        )
+        photo_profile.save(dir_file(filename_photo))
 
         # salva cliente
-        client = Client(username, email, password, city,
-                        state, filename)
+        try:
+            client = Client(username, email, password, city,
+                            state, filename_photo)
+            if (client != None):
+                client.save()
 
-        client.save()
-
-        return client, 200
+                return client, 200
+        except Exception as ex:
+            return None, 505
 
     @marshal_with(resource_field_client)
     def patch(self, client_id):

@@ -16,11 +16,11 @@
     {% block styles %}{% endblock %}
 </head>
 
-<body>
+<body class="back_color_dark">
     <header>
-        <nav class="navbar navbar-expand-lg bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand text-primary" href="#">OpenHelp
+        <nav class="navbar navbar-expand-lg menu_color_dark">
+            <div class="container-fluid ">
+                <a class="navbar-brand color_elements menu_options_bar_dark" href="#">OpenHelp
                     <img style="width: 57px; height: 55px;" src="{{ url_for('static', filename='logo.png') }}" alt=""
                         srcset=""></a>
 
@@ -28,10 +28,15 @@
                 <div class="d-flex">
 
                     {% if current_user.is_authenticated %}
-                    <a class="btn btn-primary" href="/logout">Logout do sistema</a>
+                    <div>
+                        <a class="text-primary px-2 color_elements menu_options_bar_dark border_dark" href="/clients">Mensagens dos passageiros</a>
+                        <a class="text-primary px-2 color_elements menu_options_bar_dark border_dark" href="/warnings/form">Area de avisos</a>
+                        <a class="text-primary px-2 color_elements menu_options_bar_dark border_dark" href="/profile">Acessar Perfil</a>
+                        <a class="btn btn-primary color_elements menu_options_bar_dark border_dark" href="/logout">Logout do sistema</a>
+                    </div>
                     {% else %}
-                    <a class="btn btn-primary" href="/register">Registrar Empresa</a>
-                    <a class="btn btn-primary" href="/login">Logar Empresa</a>
+                    <a class="btn btn-primary color_elements menu_options_bar_dark border_dark" href="/register">Registrar Empresa</a>
+                    <a class="btn btn-primary color_elements menu_options_bar_dark border_dark" href="/login">Logar Empresa</a>
                     {% endif %}
 
                     </form>

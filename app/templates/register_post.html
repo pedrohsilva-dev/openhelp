@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 
 {% block styles %}
@@ -11,6 +10,7 @@
         padding-bottom: 2px;
         border: 3px solid #dedede;
     }
+
     .post_image:hover {
         border-color: #cfe8ff;
     }
@@ -22,35 +22,37 @@
         flex-wrap: wrap;
     }
 
-    .block-round{
+    .block-round {
         background-color: #2d2d2d;
         border-radius: 12.7px;
         padding: 2px 8px;
         border: 3px solid #cafffd;
     }
 
-    .block{
+    .block {
         display: block;
     }
 
-    .image-flex-column{
+    .image-flex-column {
         display: flex;
         flex-direction: column;
         justify-content: center;
     }
 
-    .text-justify-space{
+    .text-justify-space {
         text-align: center;
         padding: 20px 8px;
         color: #cfe8ff;
         line-height: 30px;
     }
-    .space-y-block{
+
+    .space-y-block {
         line-height: 1px;
         padding: 2px;
         flex-wrap: wrap;
     }
-    .space-y-block div{
+
+    .space-y-block div {
         margin-bottom: 2px;
     }
 </style>
@@ -58,11 +60,16 @@
 {% endblock %}
 
 {% block main %}
-<div>
-    <div>
-        <div>
+<div class="container">
+    <div class="card my-4">
+        <div class="card-header">
+            <h1 class="h1 mx-2">
+                Register um Aviso para os seus passageiros
+            </h1>
+        </div>
+        <div class="card-body">
             <!--FORM ADD POST-->
-            <form action="/warnings/create" method="POST" class="form form-control" enctype="multipart/form-data">
+            <form action="/warnings/form" method="POST" class="form form-control" enctype="multipart/form-data">
                 <div class="my-2">{{form.title(class='form-control', placeholder='title')}}</div>
                 <div class="my-2">{{form.content(class='form-control', placeholder='content')}}</div>
                 <div class="my-2">{{form.photo(class='form-control')}}</div>
@@ -71,9 +78,9 @@
                         Add Post
                     </button>
                 </div>
-              
+
             </form>
-       <!--FORM ADD POST-->
+            <!--FORM ADD POST-->
         </div>
     </div>
 </div>

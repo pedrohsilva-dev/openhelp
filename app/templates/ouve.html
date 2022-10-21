@@ -1,59 +1,47 @@
 {% extends 'base.html' %}
 
 {% block main %}
+
 <div class="container-fluid">
     <div class="d-flex flex-row mb-2 justify-content-center display-1 align-items-center">
         <div class="mx-2">
-            <span>Você</span>
-            <i class="bi bi-arrow-right"></i>
-            <span>Fulano</span>
-        </div>
-        <div class="p-4">
-            <figure>
-                <img class="img-fluid img-thumbnail rounded-4 size_img_w"
-                    src="{{ url_for('static', filename='images/images.jpeg') }}" alt="Foto Cliente" />
-            </figure>
+            Chat com passageiro
         </div>
     </div>
+    {% for speech in speeches %}
+    {% if speech.message.who == "CLI" %}
     <div class="container my-2 mr-2">
         <div class="d-flex justify-content-around align-items-center pt-3 verylightblue_theme">
             <div class="d-flex flex-row">
-                <span>Usuario yiyuiyuiiwqewqewqewquyiuyiuy</span>
+                <span>Usuario {{speech.follow.client.username}}</span>
             </div>
-            <span>horario <i class="bi bi-clock-history"></i></span>
+            <span>{{speech.message.date_time}} <i class="bi bi-clock-history"></i></span>
         </div>
         <div class="container py-2 d-flex flex-column text-dark d-flex flex-row verylightblue_theme">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-            commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-            velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-            cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-            est laborum.
+            {{speech.message.content}}
         </div>
     </div>
 
     <!--NEXT-->
+    {% else %}
     <div class="container my-1 ml-2">
         <div class="d-flex justify-content-around align-items-center pt-3 verylightgreen_theme">
             <div class="d-flex flex-row">
-                <span>Usuario yiyuiyuiiuyiuyiuy</span>
+                <span>Usuario {{speech.follow.company.company_name}}</span>
             </div>
-            <span>horario <i class="bi bi-clock-history"></i></span>
+            <span>{{speech.message.date_time}} <i class="bi bi-clock-history"></i></span>
         </div>
         <div class="container py-2 d-flex flex-column text-dark d-flex flex-row py-4 verylightgreen_theme">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-            commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-            velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-            cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-            est laborum.
+            {{speech.message.content}}
         </div>
     </div>
+    {% endif %}
+    {% endfor %}
+
+
     <div class="card my-2 mx-2">
         <div class="card-header">Escreva e seja ouvido pelo OpenHelp</div>
-        <form class="form-control my-2" action="responseMessage.alg" method="POST">
+        <form class="form-control my-2" action="/message/create/{{follow_id}}" method="POST">
             <label for="">Mensagens: </label>
             <p class="my-2">
                 Suas mensagens ficam Verde<canvas style="
@@ -69,7 +57,7 @@
             background-color: rgb(176, 255, 255);
           "></canvas><br />
             </p>
-            <textarea class="form-control my-3"
+            <textarea class="form-control my-3" name="message"
                 placeholder="Qualquer mensagem que escreva aqui está sobre apenas responsabilidade do remetente  e destinatário"></textarea>
 
             <div class="d-flex flex-row justify-content-end">

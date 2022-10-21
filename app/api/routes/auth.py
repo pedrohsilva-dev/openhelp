@@ -1,45 +1,36 @@
-
-import datetime
-from flask_restful import Resource, reqparse, fields, marshal_with
-from flask_jwt_extended import jwt_required, create_access_token
+from http import client
+from flask import current_app, request
+from flask_restful import Resource, marshal, marshal_with, reqparse, fields, abort
 
 from app.system.models.client import Client
+from app.system.services.lib_jwt import generate_token, auth_jwt_required
 
 
-def auth_request_response():
-    # resposta vai ser no formato abaixo
-    resource_fields = {
-        "id": fields.Integer(),
-        "company_name": fields.String(),
-        "email": fields.String(),
-        "city": fields.String(),
-        "state": fields.String(),
-        "photo_profile": fields.String()
-    }
-    # request de validação do formulario api de envio
-    parser = reqparse.RequestParser()
-    parser.add_argument('email')
-    parser.add_argument('password')
+resource_fields_client = {
+    "id": fields.Integer(),
+    "username": fields.String(),
+    "email": fields.String(),
+    "city": fields.String(),
+    "state": fields.String(),
+}
 
-    return {
-        "parser": parser,
-        "resource": resource_fields
-    }
-
-
-parserLogin: reqparse.RequestParser = auth_request_response()["parser"]
-resourceLogin = auth_request_response()["resource"]
-res = {
-    "token": fields.String,
-    "expire": fields.Float
+# resposta vai ser no formato abaixo
+resource_fields_token = {
+    "token": fields.String(),
+    "client": fields.to_marshallable_type(resource_fields_client)
 }
 
 
+# request de validação do formulario api de envio
+parserLogin = reqparse.RequestParser()
+parserLogin.add_argument('email')
+parserLogin.add_argument('password')
+
+
 class Login(Resource):
-    @marshal_with(res)
     def post(self):
         """Login"""
-        args = parserLogin.parse_args()
+        args = parserLogin.parse_args(request)
 
         email: str = args.get("email")
         password: str = args.get("password")
@@ -48,13 +39,21 @@ class Login(Resource):
 
         if (user != None):
 
-            token = create_access_token(
-                user
-            )
-            return {"token": token, "expire": 0.0}
-        else:
-            return None, 404
+            token = generate_token(
+                user.id, current_app.config["SECRET_KEY"], 120)
+            return {"token": token, "client": marshal(user, resource_fields_client)}
+        return abort(404)
 
-    @jwt_required
-    def get(self):
-        return "Bearer token: dwjdbfhuihdfi9dshfoidsjfjdsoifjsdiofjidsjf"
+    @auth_jwt_required
+    @marshal_with(fields=resource_fields_client, envelope="data")
+    def get(self, current_user):
+        result = {
+            "id": current_user.id,
+            "username": current_user.username,
+            "email": current_user.email,
+            "city": current_user.city,
+            "state": current_user.state,
+            "photo_profile": current_user.photo_profile
+        }
+
+        return result, 200

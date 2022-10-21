@@ -1,3 +1,4 @@
+from sqlalchemy import select
 from app.system.extensions import db
 
 
@@ -14,6 +15,11 @@ class Follow(db.Model):
     def __init__(self, client_id, company_id):
         self.client_id = client_id
         self.company_id = company_id
+
+    @classmethod
+    def getAll(cls, idClient):
+        follows = Follow.query.filter_by(client_id=idClient).all()
+        return follows
 
     def save(self):
         db.session.add(self)

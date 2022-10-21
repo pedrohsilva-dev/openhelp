@@ -1,6 +1,8 @@
 # libs that it is system core
 
+
 import os
+from app.api.routes_images import api_image_application
 from flask import Flask
 from flask_restful import Api
 
@@ -41,9 +43,12 @@ def create_app(config=None):
     # put /api init of the URL
 
     # Init APP(API RESTful)
-    routes.init_router(
-        api             # init routes of API
-    ).init_app(server)
+    server = routes.init_router(
+        api,
+        server            # init routes of API
+    )
+
+    server = api_image_application(server)
 
     # Start WebApplication
     views.init_app(server)

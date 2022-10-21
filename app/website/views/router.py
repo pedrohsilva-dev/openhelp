@@ -61,7 +61,7 @@ router.add(
 router.add(
     Route(
         "/warnings/form",
-        homeView,
+        warningsFormView,
         ["GET", "POST"]
     )
 )
@@ -70,7 +70,7 @@ router.add(
     Route(
         "/warning/image/<int:photo_id>",
         messageWarningImageView,
-        ["GET"]
+        ["GET", "POST"]
     )
 )
 router.add(
@@ -126,6 +126,32 @@ router.add(
         deleteView,
         [
             "GET", "POST"
+        ]
+    )
+)
+
+router.add(Route(
+    "/clients",
+    showClients,
+    [
+        "GET"
+    ]
+))
+
+router.add(Route(
+    "/clients/<int:client_id>",
+    showClients,
+    [
+        "GET"
+    ]
+))
+
+router.add(
+    Route(
+        "/message/create/<int:follow_id>",
+        messageRegister,
+        [
+            "POST"
         ]
     )
 )

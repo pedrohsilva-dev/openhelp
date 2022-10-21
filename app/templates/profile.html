@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block main %}
+
 <div class="container">
     <div class="row">
         <div class="col mx-1 rounded-3">
@@ -15,6 +16,7 @@
             </div>
         </div>
         <div class="col mx-1 my-3 rounded-3">
+            <p>{{current_user.id}}</p>
             <p class="p-2 my-1">O seu nome fantasia é <span class="text-bold">{{ current_user.company_name }}</span></p>
             <p class="p-2 my-1">Seu Email é {{ current_user.email }}</p>
             <p class="p-2 my-1">Sua cidade é {{ current_user.city }}</p>

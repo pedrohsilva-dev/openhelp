@@ -3,16 +3,18 @@ from app.system.extensions import config
 
 from werkzeug.utils import secure_filename
 from flask_login import logout_user, login_user, login_required, current_user
-from flask import request, render_template, url_for, redirect, abort, send_from_directory
+from flask import jsonify, request, render_template, url_for, redirect, abort, send_from_directory
 # v from urlparse2.urlparse2 import urljoin, urlparse
 from flask import request, url_for
+from app.system.models.follow import Follow
 from app.website.forms.company import Company as CompanyForm
 from app.website.forms.company import CompanyLogin
-from app.website.forms.teste import Teste
+from app.system.models.message import Message
 from app.website.forms.warning import WarningForm
 from app.system.models.company import Company
 from app.system.models.client import Client
 from app.system.models.warning import Warnings
+from app.system.models.speech import Speech
 from app.website.utils import dir_file, generate_namefile
 
 
@@ -49,7 +51,7 @@ def loginView():
 @login_required
 def warningsView():
     """"Access: /warnings (done)"""
-    warnings = Warnings.query.all()
+    warnings = Warnings.query.filter_by(company_id=int(current_user.id))
 
     return render_template("posts.html", warnings=warnings)
 
@@ -68,15 +70,15 @@ def warningsFormView():
             filename_photo = generate_namefile(
                 secure_filename(photo.filename), photo.content_type
             )
-            photo.save(filename_photo)
+            photo.save(dir_file(filename_photo))
 
             warning = Warnings(title=title, content=content,
-                               image=filename_photo)
+                               image=filename_photo, company_id=int(current_user.id))
 
             warning.save()
 
         warnings = Warnings.query.all()
-        return render_template("posts.html", warnings=warnings)
+        return redirect(url_for("warningsView"))
 
     return render_template("register_post.html", form=form)
 
@@ -118,16 +120,16 @@ def messagesView():
 
 
 @login_required
-def messageWarningImageView(photo_id: int = None):
+def messageWarningImageView(photo_id=None):
     """ Access: /warning/image/<int:photo_id> (done) """
-    photo_warning: Warnings = Warnings.query.filter_by(id=photo_id)
+    photo_warning: Warnings = Warnings.query.get(int(photo_id))
 
     image = photo_warning.image
 
-    if (photo_id is None):
+    if (photo_id):
 
         return send_from_directory(
-            str(config['UPLOAD_FOLDER']), image, as_attachment=True
+            os.path.realpath("files"), image, as_attachment=True
         ), 200
 
     else:
@@ -239,9 +241,42 @@ def updateView():
 def deleteView():
     if request.method == "POST":
         company: Company = Company.query.filter_by(id=int(current_user.id))
-        # deleta cliente
+        # deleta client
         Company.delete_object(company)
     else:
         return render_template("confirm_delete.html")
 
     return redirect(url_for("loginView"))
+
+
+@login_required
+def showClients(client_id=None):
+    if (client_id == None):
+        follows_clients = Follow.query.filter_by(company_id=1).all()
+        list_follow_clients = []
+        for follow in follows_clients:
+            hasSpeech = Speech.list_message_follow(follow_id=follow.id)
+            if hasSpeech:
+                list_follow_clients.append(
+                    {"follow": follow, "speech": hasSpeech}
+                )
+            else:
+                list_follow_clients.append(
+                    {"follow": follow, "speech": None}
+                )
+
+        return render_template("clients.html", follows=list_follow_clients)
+    else:
+        speeches = Speech.list_messages(client_id)
+
+        return render_template("ouve.html", speeches=speeches, follow_id=client_id)
+
+
+@login_required
+def messageRegister(follow_id):
+    content = request.form.get("message", None)
+    message = Message("Qualquer um", content, "COM")
+    message.save()
+    speech = Speech(follow_id=follow_id, message_id=message.id)
+    speech.save()
+    return redirect(url_for("showClients", client_id=follow_id))
