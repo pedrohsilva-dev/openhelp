@@ -15,9 +15,11 @@
 # Folders
 .cache
 __pycache__/
-migrations
-node_modules
-bower_components
+migrations/
+temp/
+files/
+node_modules/
+bower_components/
 
 # Translation files
 *.mo
