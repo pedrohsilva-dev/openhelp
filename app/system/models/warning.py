@@ -1,8 +1,7 @@
 from app.system.extensions import db
-from sqlalchemy import select
 
-from app.system.models.company import Company
 from app.system.models.follow import Follow
+from datetime import datetime
 
 
 class Warnings(db.Model):
@@ -14,6 +13,8 @@ class Warnings(db.Model):
     company_id = db.Column(db.Integer, db.ForeignKey("companies.id"))
     company = db.relationship(
         "Company", foreign_keys=company_id)
+    pub_date = db.Column(db.DateTime, nullable=False,
+                         default=datetime.utcnow)
 
     def __init__(self, title: str, content: str, image: str, company_id: int):
         self.title = title

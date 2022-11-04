@@ -8,13 +8,13 @@ class Message(db.Model):
     title = db.Column(db.String)
     content = db.Column(db.String)
     who = db.Column(db.String)
-    date_time = db.Column(db.String)
+    pub_date = db.Column(db.DateTime, nullable=False,
+                         default=datetime.utcnow)
 
     def __init__(self, title: str, content: str, who: str):
         self.title = title
         self.content = content
         self.who = who
-        self.date_time = "20-12-2001"
 
     def save(self):
         db.session.add(self)

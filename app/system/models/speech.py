@@ -1,14 +1,11 @@
 from app.system.extensions import db
-from sqlalchemy import Integer, Column, ForeignKey, String, select
-
-from app.system.models import follow
+from sqlalchemy import Integer, Column, ForeignKey, select
 
 
 class Speech(db.Model):
     __tablename__ = "speeches"
 
     id = Column(Integer, primary_key=True)
-    title = Column(String)
     message_id = Column(Integer, ForeignKey("messages.id"))
     message = db.relationship(
         "Message", foreign_keys=message_id, backref='speeches', lazy=True)
@@ -16,8 +13,7 @@ class Speech(db.Model):
     follow = db.relationship(
         "Follow", foreign_keys=follow_id)
 
-    def __init__(self, title: str, follow_id: int, message_id: int):
-        self.title = title
+    def __init__(self, follow_id: int, message_id: int):
         self.follow_id = follow_id
         self.message_id = message_id
 
