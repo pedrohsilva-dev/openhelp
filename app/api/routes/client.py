@@ -26,7 +26,7 @@ def client_request_response():
     parser.add_argument('city', location="form")
     parser.add_argument('state', location="form")
     parser.add_argument(
-        "photo_profile", type=werkzeug.datastructures.FileStorage, location='form'
+        "photo_profile", type=werkzeug.datastructures.FileStorage, location='files'
     )
 # 192.168.10.102
     return {

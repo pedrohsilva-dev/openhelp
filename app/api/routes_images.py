@@ -44,6 +44,8 @@ def clientAPIImageView(current_user):
     if (current_user):
         image = current_user.photo_profile
 
+        print(image)
+
         return send_from_directory(
             str(current_app.config['UPLOAD_FOLDER']), image, as_attachment=True
         ), 200
@@ -54,7 +56,7 @@ def clientAPIImageView(current_user):
 def api_image_application(server: Flask = None):
     server.add_url_rule('/api/warnings/image/<int:id>',
                         view_func=warningAPIImageView, provide_automatic_options=False)
-    server.add_url_rule('/api/clients/image/<int:id>',
+    server.add_url_rule('/api/clients/image/profile',
                         view_func=clientAPIImageView, provide_automatic_options=False)
     server.add_url_rule('/api/companies/image/<int:id>',
                         view_func=companyAPIImageView, provide_automatic_options=False)

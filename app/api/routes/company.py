@@ -9,7 +9,7 @@ parser_warning = reqparse.RequestParser()
 parser_warning.add_argument('company_id', type=int)
 
 parser_search_company = reqparse.RequestParser()
-parser_search_company.add_argument('csearch', type=str, location="args")
+parser_search_company.add_argument('search', type=str, location="args")
 
 
 resource_fields_follow_company = {
@@ -63,6 +63,8 @@ class CompanyResource(Resource):
         resource_fields_follow_company)
     def get(self, current_user):
         args = parser_search_company.parse_args(request)
-        search = str("%{}%").format(str(args.get("search", "")))
+        searchText = args.get('search', '')
+        search = f"%{searchText}%"
+        print(search)
         return Company.query.filter(Company.company_name.like(
             search)).filter_by(state=current_user.state).all()

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h1 class="h1 mx-2">
+                Confirme a deleção do Aviso
+            </h1>
+        </div>
+        <div class="container card-body">
+            <form action="/warning/delete" method="post">
+                <div class="d-flex flex-row justify-content-end">
+                    <input type="hidden" name="_id" value="{{ id_warning }}">
+                    <button class="btn btn-danger px-4" type="submit">Deletar seu aviso</button>
+                </div>
+            </form>
+        </div>
+    </div>
+   
+</div>
+{% endblock %}

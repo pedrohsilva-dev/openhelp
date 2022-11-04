@@ -42,7 +42,9 @@ class WarningResource(Resource):
         page = int(args.get("page", None))
         per_page = int(args.get("per_page", None))
         data = list()
-        warnings = Warnings.getAll(page, per_page, client_id=current_user.id)
+        warnings = Warnings.getAll(
+            page, per_page, client_id=current_user.id)
+
         for i in warnings:
             data.append({
                 "id": int(i.id),

@@ -23,14 +23,20 @@ class Warnings(db.Model):
 
     @classmethod
     def getAll(cls, page: int = None, per_page: int = None, client_id=None):
+        follows = Follow.query.filter_by(client_id=client_id).all()
+        data = []
+        for i in follows:
+            data.append(Warnings.query.filter_by(
+                company_id=i.company_id).first())
 
-        warnings = Warnings.query.filter(
-            Follow.client_id == client_id
-        ).order_by('title')
         qtd_min = (per_page * page) - per_page
         qtd_max = (per_page * page)
-        return warnings.all()[qtd_min:qtd_max]
+        return data[qtd_min:qtd_max]
 
     def save(self):
         db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
         db.session.commit()

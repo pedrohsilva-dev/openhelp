@@ -63,7 +63,7 @@
 
 <div class="container my-3 px-4">
     <h1 class="h1">
-        Seus Avisos
+        Seus Avisos<a  class="btn btn-primary color_elements menu_options_bar_dark border_dark mx-4" href="/warnings/form">Cadastrar novo Aviso</a>
     </h1>
     <div class="container">
         <div class="space-y-block">
@@ -74,7 +74,7 @@
                 <div class="block text-justify-space">
                     <p class="text-justify-space mt-2">{{ warning.content }}</p>
                     <div>
-                        <a href="teste.py" onclick="return confirm('deseja deletar esse post mesmo?')"
+                        <a href="warning/delete/{{ warning.id }}" onclick="return confirm('deseja deletar esse post mesmo?')"
                             class="btn btn-danger mt-4 mb-0">Delete</a>
                     </div>
                 </div>

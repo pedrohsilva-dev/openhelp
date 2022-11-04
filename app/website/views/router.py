@@ -1,5 +1,7 @@
-from app.website.views.web import *
+
+
 from app.website.views.engine_router import Router, Route
+from app.website.views.web import *
 
 router = Router()
 
@@ -129,6 +131,24 @@ router.add(
         ]
     )
 )
+
+router.add(
+    Route(
+        "/warning/delete/<_id>",
+        deleteWarningView,
+        ["GET"]
+    )
+)
+router.add(
+    Route(
+        "/warning/delete",
+        deleteWarningView,
+        [
+            "POST"
+        ]
+    )
+)
+
 
 router.add(Route(
     "/clients",

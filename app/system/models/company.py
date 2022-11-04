@@ -27,9 +27,8 @@ class Company(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    @classmethod
-    def delete_object(cls, data):
-        data.delete()
+    def delete_object(self):
+        db.delete(self)
         db.session.commit()
 
     @classmethod

@@ -12,6 +12,8 @@ from app.system.services import authentication
 from app.api import routes
 from app.website import views
 
+from flask_cors import CORS
+
 
 def create_app(config=None):
     """
@@ -21,6 +23,7 @@ def create_app(config=None):
     """
 
     server = Flask(__name__)
+    CORS(server, resources={r"/api/*": {"origins": "*"}})
 
     # Init Configuration
     server.config.from_object(config())

@@ -1,6 +1,6 @@
 from app.system.models.client import Client
 from app.system.models.message import Message
-from app.system.repositories.messages_repository import MessageRepository,
+from app.system.repositories.messages_repository import MessageRepository
 
 
 def createMessage(to: int):

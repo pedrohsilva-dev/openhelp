@@ -18,9 +18,10 @@ def auth_jwt_required(f):
     @wraps(f)
     def apply(*args, **kwargs):
         token = None
+
         if ("Authorization" in request.headers):
             token = request.headers["Authorization"]
-
+        print(token)
         if (not token):
             return abort(403)
 
