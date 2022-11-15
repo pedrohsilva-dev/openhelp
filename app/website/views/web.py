@@ -30,8 +30,8 @@ def index():
 @login_required
 def messageRegister(follow_id):
     content = request.form.get("message", None)
-    message = Message("Qualquer um", content, "COM")
+    message = Message(content, "COM")
     message.save()
-    speech = Speech(title="teste", follow_id=follow_id, message_id=message.id)
+    speech = Speech(follow_id=follow_id, message_id=message.id)
     speech.save()
     return redirect(url_for("showClients", client_id=follow_id))

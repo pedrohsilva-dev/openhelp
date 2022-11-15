@@ -1,5 +1,6 @@
 from app.system.extensions import db
 from sqlalchemy import Integer, Column, ForeignKey, select
+from datetime import datetime
 
 
 class Speech(db.Model):
@@ -12,6 +13,8 @@ class Speech(db.Model):
     follow_id = Column(Integer, ForeignKey("follows.id"))
     follow = db.relationship(
         "Follow", foreign_keys=follow_id)
+    pub_date = db.Column(db.DateTime, nullable=False,
+                         default=datetime.utcnow)
 
     def __init__(self, follow_id: int, message_id: int):
         self.follow_id = follow_id

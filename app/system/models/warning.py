@@ -1,6 +1,7 @@
 from app.system.extensions import db
 
 from app.system.models.follow import Follow
+from app.system.models.client import Client
 from datetime import datetime
 
 
@@ -24,14 +25,11 @@ class Warnings(db.Model):
 
     @classmethod
     def getAll(cls, page: int = None, per_page: int = None, client_id=None):
-        follows = Follow.query.filter_by(client_id=client_id).all()
-        data = []
-        for i in follows:
-            data.append(Warnings.query.filter_by(
-                company_id=i.company_id).first())
-
         qtd_min = (per_page * page) - per_page
         qtd_max = (per_page * page)
+        data = Warnings.query.select_from(Follow).join(Client).filter(
+            Warnings.company_id == Follow.company_id).filter(Client.id == client_id).order_by(Warnings.id).all()
+
         return data[qtd_min:qtd_max]
 
     def save(self):

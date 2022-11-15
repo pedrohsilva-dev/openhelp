@@ -29,6 +29,7 @@ response_marshal = {
     "title": fields.String,
     "content": fields.String,
     "image": fields.String,
+    "pub_date": fields.DateTime(),
     "company": fields.Nested(resource_fields_company)
 }
 
@@ -41,16 +42,8 @@ class WarningResource(Resource):
 
         page = int(args.get("page", None))
         per_page = int(args.get("per_page", None))
-        data = list()
+
         warnings = Warnings.getAll(
             page, per_page, client_id=current_user.id)
 
-        for i in warnings:
-            data.append({
-                "id": int(i.id),
-                "title": str(i.title),
-                "content": str(i.content),
-                "image": "/warnings/image/" + str(i.id),
-                "company": marshal(i.company, resource_fields_company)
-            })
-        return data
+        return warnings

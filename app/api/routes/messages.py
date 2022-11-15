@@ -6,8 +6,11 @@ from app.system.models.follow import Follow
 from app.system.services.lib_jwt import auth_jwt_required
 
 parserSpeech = reqparse.RequestParser()
-parserSpeech.add_argument("title", type=str)
-parserSpeech.add_argument("follow_id", type=int)
+parserSpeech.add_argument("follow_id", type=int, location='args')
+
+parserMessage = reqparse.RequestParser()
+parserMessage.add_argument("follow_id", type=int)
+parserMessage.add_argument("content")
 
 success_resource = {
     "success": fields.String()
@@ -20,10 +23,16 @@ follow_resource_fields = {
 
 speeches_resource = {
     "id": fields.Integer(),
-    "title": fields.String(),
-    "message_id": fields.Integer(),
+    "company_name": fields.String,
+    "pub_date": fields.DateTime,
     "follow_id": fields.Integer(),
-    "follow": fields.Nested(follow_resource_fields)
+    "image_company": fields.String,
+}
+messageResource = {
+    "id": fields.Integer,
+    "content": fields.String,
+    "pub_date": fields.DateTime,
+    "who": fields.String
 }
 
 
@@ -33,12 +42,11 @@ class SpeechResource(Resource):
     def post(self, current_user):
         args = parserSpeech.parse_args(request)
         follow_value_id = args.get("follow_id", None)
-        title_value = args.get("title", None)
         message = Message(
-            title=f"Conversando com {current_user.username}", content="criou uma conversa", who="CLI")
+            content="criou uma conversa", who="CLI")
         message.save()
 
-        speech = Speech(title=title_value, message_id=int(message.id),
+        speech = Speech(message_id=int(message.id),
                         follow_id=int(follow_value_id))
 
         speech.save()
@@ -50,12 +58,20 @@ class SpeechResource(Resource):
     @auth_jwt_required
     @marshal_with(speeches_resource)
     def get(self, current_user):
+
         follows = Follow.query.filter_by(client_id=current_user.id).all()
-        print(follows)
+
         speeches = []
         for i in follows:
-            speeches.append(Speech.query.filter_by(follow_id=i.id).first())
-        print(speeches)
+            speech = Speech.query.filter_by(follow_id=i.id).first()
+            if (speech):
+                speeches.append({
+                    "id": speech.id,
+                    "company_name": i.company.company_name,
+                    "pub_date": speech.pub_date,
+                    "follow_id": i.id,
+                    "image_company": f"/companies/image/{i.company.id}"
+                })
         return speeches
 
 
@@ -63,21 +79,23 @@ class MessageResource(Resource):
     @auth_jwt_required
     @marshal_with(success_resource)
     def post(self, current_user):
-        args = None
-        content = args.get("message", None)
-        title = args.get("title", None)
-        follow_id = args.get("follow_id", None)
-        message = Message(title, content, "CLI")
+        args = parserMessage.parse_args(request)
+        content = args.get("content", None)
+        follow_id = int(args.get("follow_id", None))
+        message = Message(content, "CLI")
         message.save()
         speech = Speech(follow_id=follow_id, message_id=message.id)
         speech.save()
 
     @auth_jwt_required
-    @marshal_with(success_resource)
+    @marshal_with(messageResource)
     def get(self, current_user):
-        speeches = Speech.query.filter_by(follow_id=2).all()
+        args = parserSpeech.parse_args(request)
+
+        speeches = Speech.query.filter_by(
+            follow_id=int(args.get("follow_id", None))).all()
         messages = []
         for i in speeches:
-            messages.append(i.message.content)
-        print(messages)
-        return None
+            messages.append(i.message)
+
+        return messages

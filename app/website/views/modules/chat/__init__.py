@@ -9,7 +9,8 @@ from app.system.models.follow import Follow
 @login_required
 def showClients(client_id=None):
     if (client_id == None):
-        follows_clients = Follow.query.filter_by(company_id=current_user.id).all()
+        follows_clients = Follow.query.filter_by(
+            company_id=current_user.id).all()
         list_follow_clients = []
         for follow in follows_clients:
             hasSpeech = Speech.list_message_follow(follow_id=follow.id)

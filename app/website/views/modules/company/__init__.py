@@ -1,5 +1,5 @@
 import os
-from flask import current_app, redirect, render_template, request, send_from_directory, url_for
+from flask import current_app, redirect, render_template, request, send_from_directory, url_for, flash
 from flask_login import current_user, login_required, login_user, logout_user
 from app.website.forms.company import Company as CompanyForm
 from app.website.forms.company import CompanyLogin
@@ -14,28 +14,33 @@ def registerView():
         form = CompanyForm()
         return render_template("register.html", form=form)
     elif str(request.method) == "POST":
-        form = CompanyForm()
-        if form.validate_on_submit():
-            username = form.fantasy_name.data
-            email = form.email.data
-            password = form.password.data
-            city = form.city.data
-            state = form.state.data
+        try:
+            form = CompanyForm()
+            if form.validate_on_submit():
+                username = form.fantasy_name.data
+                email = form.email.data
+                password = form.password.data
+                city = form.city.data
+                state = form.state.data
 
-            photo = form.photo.data
+                photo = form.photo.data
 
-            filename_photo = generate_namefile(
-                secure_filename(photo.filename), photo.content_type
-            )
-            photo.save(dir_file(filename_photo))
+                filename_photo = generate_namefile(
+                    secure_filename(photo.filename), photo.content_type
+                )
+                photo.save(dir_file(filename_photo))
 
-            company = Company(username, email, password,
-                              city, state, filename_photo)
+                company = Company(username, email, password,
+                                  city, state, filename_photo)
 
-            company.save()
+                company.save()
+                flash("Cadastro bem sucedido!!!", "success")
 
-        form = CompanyLogin()
-        return render_template("login.html", form=form)
+        except:
+            flash("Erro no cadastro!!!", "error")
+
+    form = CompanyLogin()
+    return render_template("login.html", form=form)
 
 
 @login_required
@@ -81,6 +86,7 @@ def updateView():
                 data["password"] = str(password)
 
             Company.update_company(old=company, new=data)
+            flash("Atualizado com sucesso!!!", "success")
     elif (request.method == "GET"):
         formCompany = CompanyForm()
 
@@ -102,6 +108,7 @@ def deleteView():
             "UPLOAD_FOLDER"), company.photo_profile)
         os.remove(filePhoto)
         Company.delete_object()
+        flash("Deletado com sucesso!!!", "success")
     else:
         return render_template("confirm_delete.html")
 
@@ -133,6 +140,7 @@ def loginView():
             return redirect(url_for("index"))
 
         else:
-            return redirect(url_for("index"))
+            flash("Credenciais errada, confirme o email ou a senha!!!", "error")
+            return redirect(url_for("loginView"))
 
     return render_template("login.html", form=form)

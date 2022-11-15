@@ -29,25 +29,119 @@
 
                     {% if current_user.is_authenticated %}
                     <div>
-                        <a class="text-primary px-2 color_elements menu_options_bar_dark border_dark" href="/clients">Mensagens dos passageiros</a>
-                        <a class="text-primary px-2 color_elements menu_options_bar_dark border_dark" href="/warnings">Area de avisos</a>
-                        <a class="text-primary px-2 color_elements menu_options_bar_dark border_dark" href="/profile">Acessar Perfil</a>
-                        <a class="btn btn-primary color_elements menu_options_bar_dark border_dark" href="/logout">Logout do sistema</a>
+                        <a class="text-primary px-2 color_elements menu_options_bar_dark border_dark"
+                            href="/clients">Mensagens dos passageiros</a>
+                        <a class="text-primary px-2 color_elements menu_options_bar_dark border_dark"
+                            href="/warnings">Area de avisos</a>
+                        <a class="text-primary px-2 color_elements menu_options_bar_dark border_dark"
+                            href="/profile">Acessar Perfil</a>
+                        <a class="btn btn-primary color_elements menu_options_bar_dark border_dark"
+                            href="/logout">Logout do sistema</a>
                     </div>
                     {% else %}
-                    <a class="btn btn-primary color_elements menu_options_bar_dark border_dark" href="/register">Registrar Empresa</a>
-                    <a class="btn btn-primary color_elements menu_options_bar_dark border_dark" href="/login">Logar Empresa</a>
+                    <a class="btn btn-primary color_elements menu_options_bar_dark border_dark"
+                        href="/register">Registrar Empresa</a>
+                    <a class="btn btn-primary color_elements menu_options_bar_dark border_dark" href="/login">Logar
+                        Empresa</a>
                     {% endif %}
 
-                    </form>
                 </div>
         </nav>
     </header>
     <main>
+        <div class="center">
+            {% with messages = get_flashed_messages(category_filter=["error"]) %}
+
+            {% if messages %}
+
+            <div class="modal" tabindex="-1" role="dialog" id="alert-errors">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content bg-dark">
+                        <div style="display: flex; justify-content: space-between;margin: 10px 20px;">
+                            <h5 class="modal-title text-danger">Falha: </h5>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close"
+                                onclick="close_error_modal()" style="border-radius: 2px;">
+                                <span style="font-size: 15pt;" aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div>
+                            <hr class="text-danger">
+                        </div>
+                        <div class="bg-dark">
+                            <p class="text-danger px-4 py-2">{{messages[0]}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+            {% endwith %}
+
+            {% with messages = get_flashed_messages(category_filter=["success"]) %}
+
+            {% if messages %}
+
+            <div class="modal" tabindex="-1" role="dialog" id="alert-success">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content bg-dark">
+                        <div style="display: flex; justify-content: space-between;margin: 10px 20px;">
+                            <h5 class="modal-title text-success"
+                                style="color: #00d12d  !important; display: flex; align-items: center;">Sucesso: </h5>
+                            <button type="button" class="btn btn-success"
+                                style="background-color: #00d12d ; border-color: black !important;" data-dismiss="modal"
+                                aria-label="Close" onclick="close_success_modal()" style="border-radius: 2px;">
+                                <span style="font-size: 15pt;" aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div>
+                            <hr class="text-success">
+                        </div>
+                        <div class="bg-dark">
+                            <p class="text-success px-4 py-2" style="color: #00d12d !important;">{{messages[0]}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+            {% endwith %}
+        </div>
         {% block main %}
         {% endblock %}
     </main>
-    <script src="{{ url_for('static', filename='bootstrap.js') }}"></script>
+    <script src=" {{ url_for('static', filename='bootstrap.js' ) }}">
+    </script>
+    <script>
+        try {
+            var alert_errors = document.querySelector("#alert-errors");
+            alert_errors.classList.toggle("error", true);
+
+        } catch { }
+        try {
+            var alert_success = document.querySelector("#alert-success");
+            alert_success.classList.toggle("correct", true);
+        } catch {
+
+        }
+
+
+        function close_error_modal() {
+            var bool_error = alert_errors.classList.contains("error");
+            if (bool_error == true) {
+                alert_errors.classList.toggle("error", false);
+            } else {
+                alert_errors.classList.toggle("error", true);
+            }
+        }
+        function close_success_modal() {
+            var bool_success = alert_success.classList.contains("correct");
+            if (bool_success == true) {
+                alert_success.classList.toggle("correct", false);
+            } else {
+                alert_success.classList.toggle("correct", true);
+            }
+        }
+    </script>
 </body>
 
 </html>

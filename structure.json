@@ -1,0 +1,14 @@
+{
+    "message": {
+        "id": "numero",
+        "content":"texto",
+        "pub_date":"datetime",
+        "who": "quem"
+    },
+    "speech": {
+    "id": "numero",
+        "company_name": "texto",
+        "pub_date": "datetime",
+        "image_company": "slug" 
+        }
+}
